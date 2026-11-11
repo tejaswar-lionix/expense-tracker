@@ -2,13 +2,23 @@
 
 Track expenses and summarise spending by category.
 
-## Status
+## Usage
 
-Starter project with a working core module and unit tests.
+```bash
+python3 -c "from expenses import *; e=[]; add_expense(e, 12.5, 'food', 'lunch'); print(total(e), by_category(e))"
+```
+
+## Features
+
+- Validated expense entry with categories and dates
+- Totals overall and per category
+- Monthly filtering with monthly(expenses, 'YYYY-MM')
 
 ## Tests
 
+```bash
 python3 -m unittest -q
+```
 
 ## License
 
