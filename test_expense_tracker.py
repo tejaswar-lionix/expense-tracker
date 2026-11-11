@@ -21,5 +21,21 @@ class ExpenseTests(unittest.TestCase):
             add_expense([], 5, "pets")
 
 
+class MonthlyTests(unittest.TestCase):
+    def test_monthly_filters_by_prefix(self):
+        from expenses import monthly
+
+        expenses = []
+        add_expense(expenses, 10, "food", day="2026-11-01")
+        add_expense(expenses, 20, "food", day="2026-10-01")
+        self.assertEqual(total(monthly(expenses, "2026-11")), 10.0)
+
+    def test_monthly_rejects_bad_format(self):
+        from expenses import monthly
+
+        with self.assertRaises(ValueError):
+            monthly([], "November")
+
+
 if __name__ == "__main__":
     unittest.main()
