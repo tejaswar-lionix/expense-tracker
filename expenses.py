@@ -47,3 +47,10 @@ def by_category(expenses):
             totals.get(item["category"], 0) + item["amount"], 2
         )
     return totals
+
+
+def monthly(expenses, month):
+    """Return expenses whose date starts with month in YYYY-MM form."""
+    if len(month) != 7 or month[4] != "-":
+        raise ValueError("month must be formatted as YYYY-MM")
+    return [item for item in expenses if item["date"].startswith(month)]
