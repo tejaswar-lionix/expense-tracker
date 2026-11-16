@@ -10,6 +10,7 @@ from expenses import (
     by_category,
     export_csv,
     import_csv,
+    remove,
     set_budget,
     total,
 )
@@ -31,6 +32,34 @@ class ExpenseTests(unittest.TestCase):
     def test_rejects_unknown_category(self):
         with self.assertRaises(ValueError):
             add_expense([], 5, "pets")
+
+
+class RemoveTests(unittest.TestCase):
+    def test_remove_middle_item(self):
+        expenses = []
+        add_expense(expenses, 10, "food", day="2026-11-01")
+        add_expense(expenses, 5, "fun", day="2026-11-02")
+        add_expense(expenses, 2, "home", day="2026-11-03")
+        self.assertEqual(
+            [item["amount"] for item in remove(expenses, 1)],
+            [10.0, 2.0],
+        )
+
+    def test_remove_only_item(self):
+        expenses = []
+        add_expense(expenses, 10, "food", day="2026-11-01")
+        self.assertEqual(remove(expenses, 0), [])
+
+    def test_remove_does_not_mutate_input(self):
+        expenses = []
+        add_expense(expenses, 10, "food", day="2026-11-01")
+        add_expense(expenses, 5, "fun", day="2026-11-02")
+        remove(expenses, 0)
+        self.assertEqual(len(expenses), 2)
+
+    def test_remove_out_of_range_raises(self):
+        with self.assertRaises(IndexError):
+            remove([], 0)
 
 
 class CsvTests(unittest.TestCase):
