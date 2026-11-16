@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Track expenses in a JSON file and summarise spending by category."""
+import csv
 import json
 import os
 from datetime import date
@@ -38,6 +39,37 @@ def add_expense(expenses, amount, category, note="", day=None):
 
 def total(expenses):
     return round(sum(item["amount"] for item in expenses), 2)
+
+
+def export_csv(expenses, path):
+    with open(path, "w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["amount", "category", "note", "date"])
+        for item in expenses:
+            writer.writerow(
+                [
+                    item["amount"],
+                    item["category"],
+                    item.get("note", ""),
+                    item["date"],
+                ]
+            )
+    return path
+
+
+def import_csv(path):
+    with open(path, newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        expenses = []
+        for row in reader:
+            expenses = add_expense(
+                expenses,
+                float(row["amount"]),
+                row["category"],
+                row.get("note") or "",
+                row["date"],
+            )
+    return expenses
 
 
 def by_category(expenses):

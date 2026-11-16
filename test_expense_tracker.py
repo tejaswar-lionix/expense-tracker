@@ -1,3 +1,6 @@
+import csv
+import os
+import tempfile
 import unittest
 
 from expenses import (
@@ -5,6 +8,8 @@ from expenses import (
     budget_report,
     budget_warnings,
     by_category,
+    export_csv,
+    import_csv,
     set_budget,
     total,
 )
@@ -26,6 +31,31 @@ class ExpenseTests(unittest.TestCase):
     def test_rejects_unknown_category(self):
         with self.assertRaises(ValueError):
             add_expense([], 5, "pets")
+
+
+class CsvTests(unittest.TestCase):
+    def test_export_import_roundtrip(self):
+        expenses = []
+        add_expense(expenses, 12.5, "food", "lunch, with tea", day="2026-11-01")
+        add_expense(expenses, 3, "transport", day="2026-11-02")
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "expenses.csv")
+            export_csv(expenses, path)
+            self.assertEqual(import_csv(path), expenses)
+
+    def test_import_rejects_unknown_category(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "expenses.csv")
+            with open(path, "w", newline="", encoding="utf-8") as handle:
+                writer = csv.writer(handle)
+                writer.writerow(["amount", "category", "note", "date"])
+                writer.writerow([5, "pets", "", "2026-11-01"])
+            with self.assertRaises(ValueError):
+                import_csv(path)
+
+    def test_import_missing_file_raises(self):
+        with self.assertRaises(FileNotFoundError):
+            import_csv("/nonexistent/expenses.csv")
 
 
 class MonthlyTests(unittest.TestCase):
