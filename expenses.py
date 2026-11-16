@@ -37,6 +37,12 @@ def add_expense(expenses, amount, category, note="", day=None):
     return expenses
 
 
+def remove(expenses, index):
+    remaining = list(expenses)
+    remaining.pop(index)
+    return remaining
+
+
 def total(expenses):
     return round(sum(item["amount"] for item in expenses), 2)
 
