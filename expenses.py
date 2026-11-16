@@ -54,3 +54,39 @@ def monthly(expenses, month):
     if len(month) != 7 or month[4] != "-":
         raise ValueError("month must be formatted as YYYY-MM")
     return [item for item in expenses if item["date"].startswith(month)]
+
+
+def set_budget(budgets, category, amount):
+    """Store a monthly budget for category in the budgets mapping."""
+    if category not in CATEGORIES:
+        raise ValueError(f"unknown category: {category}")
+    if amount < 0:
+        raise ValueError("budget must not be negative")
+    budgets[category] = round(float(amount), 2)
+    return budgets
+
+
+def budget_report(expenses, budgets, month):
+    """Compare spending for month against each category budget."""
+    spent = by_category(monthly(expenses, month))
+    report = {}
+    for category, budget in budgets.items():
+        used = spent.get(category, 0.0)
+        remaining = round(budget - used, 2)
+        report[category] = {
+            "budget": round(float(budget), 2),
+            "spent": used,
+            "remaining": remaining,
+            "over": used > budget,
+        }
+    return report
+
+
+def budget_warnings(expenses, budgets, month):
+    """Return one message per category that has exceeded its budget."""
+    warnings = []
+    for category, status in budget_report(expenses, budgets, month).items():
+        if status["over"]:
+            over_by = round(status["spent"] - status["budget"], 2)
+            warnings.append(f"{category} is over budget by {over_by:.2f}")
+    return warnings

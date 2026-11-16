@@ -13,6 +13,13 @@ python3 -c "from expenses import *; e=[]; add_expense(e, 12.5, 'food', 'lunch');
 - Validated expense entry with categories and dates
 - Totals overall and per category
 - Monthly filtering with monthly(expenses, 'YYYY-MM')
+- Per-category monthly budgets with spent, remaining, and over-budget warnings
+
+```python
+budgets = set_budget({}, "food", 300)
+report = budget_report(expenses, budgets, "2026-11")
+warnings = budget_warnings(expenses, budgets, "2026-11")
+```
 
 ## Tests
 
