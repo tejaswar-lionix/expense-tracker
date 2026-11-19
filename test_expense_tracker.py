@@ -5,6 +5,7 @@ import unittest
 
 from expenses import (
     add_expense,
+    average_expense,
     budget_report,
     budget_warnings,
     by_category,
@@ -32,6 +33,23 @@ class ExpenseTests(unittest.TestCase):
     def test_rejects_unknown_category(self):
         with self.assertRaises(ValueError):
             add_expense([], 5, "pets")
+
+
+class AverageTests(unittest.TestCase):
+    def test_average_of_multiple_expenses(self):
+        expenses = []
+        add_expense(expenses, 10, "food", day="2026-11-01")
+        add_expense(expenses, 5.5, "fun", day="2026-11-02")
+        add_expense(expenses, 2.5, "home", day="2026-11-03")
+        self.assertEqual(average_expense(expenses), 6.0)
+
+    def test_average_of_single_expense(self):
+        expenses = []
+        add_expense(expenses, 12.5, "food", day="2026-11-01")
+        self.assertEqual(average_expense(expenses), 12.5)
+
+    def test_average_of_empty_list_is_zero(self):
+        self.assertEqual(average_expense([]), 0.0)
 
 
 class RemoveTests(unittest.TestCase):

@@ -47,6 +47,12 @@ def total(expenses):
     return round(sum(item["amount"] for item in expenses), 2)
 
 
+def average_expense(expenses):
+    if not expenses:
+        return 0.0
+    return round(sum(item["amount"] for item in expenses) / len(expenses), 2)
+
+
 def export_csv(expenses, path):
     with open(path, "w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
