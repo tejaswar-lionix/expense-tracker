@@ -160,5 +160,24 @@ class BudgetTests(unittest.TestCase):
         )
 
 
+class MonthlyTotalsTests(unittest.TestCase):
+    def test_sums_by_month(self):
+        from expenses import monthly_totals
+
+        expenses = [
+            {"amount": 10.0, "date": "2026-11-01"},
+            {"amount": 2.5, "date": "2026-11-15"},
+            {"amount": 7.0, "date": "2026-10-31"},
+        ]
+        self.assertEqual(
+            monthly_totals(expenses), {"2026-11": 12.5, "2026-10": 7.0}
+        )
+
+    def test_empty(self):
+        from expenses import monthly_totals
+
+        self.assertEqual(monthly_totals([]), {})
+
+
 if __name__ == "__main__":
     unittest.main()

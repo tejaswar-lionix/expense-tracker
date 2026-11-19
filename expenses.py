@@ -134,3 +134,12 @@ def budget_warnings(expenses, budgets, month):
             over_by = round(status["spent"] - status["budget"], 2)
             warnings.append(f"{category} is over budget by {over_by:.2f}")
     return warnings
+
+
+def monthly_totals(expenses):
+    """Sum expenses per YYYY-MM month."""
+    totals = {}
+    for item in expenses:
+        month = item["date"][:7]
+        totals[month] = round(totals.get(month, 0.0) + item["amount"], 2)
+    return totals
