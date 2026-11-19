@@ -33,6 +33,10 @@ warnings = budget_warnings(expenses, budgets, "2026-11")
 python3 -m unittest -q
 ```
 
+## Additional API
+
+- `monthly_totals(expenses)` sums expenses per `YYYY-MM` month.
+
 ## License
 
 MIT
