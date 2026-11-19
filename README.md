@@ -15,6 +15,7 @@ python3 -c "from expenses import *; export_csv(import_csv('expenses.csv'), 'copy
 
 - Validated expense entry with categories and dates
 - Totals overall and per category
+- Mean expense amount with average_expense(expenses)
 - Remove an expense by index without mutating the original list with remove(expenses, index)
 - Monthly filtering with monthly(expenses, 'YYYY-MM')
 - Per-category monthly budgets with spent, remaining, and over-budget warnings
